@@ -19,25 +19,31 @@ def play(player, position):
     prettyprint()
 
 
-def winner():
+def winner(player):
+    won = False
     # Check rows
     row0 = board[0][0] == board[0][1] == board[0][2] != ' '
     row1 = board[1][0] == board[1][1] == board[1][2] != ' '
     row2 = board[2][0] == board[2][1] == board[2][2] != ' '
     if row0 or row1 or row2:
-        return True
+        won = True
     # Check columns
     col0 = board[0][0] == board[1][0] == board[2][0] != ' '
     col1 = board[0][1] == board[1][1] == board[2][1] != ' '
     col2 = board[0][2] == board[1][2] == board[2][2] != ' '
     if col0 or col1 or col2:
-        return True
+        won = True
     # Check diganals
     diag0 = board[0][0] == board[1][1] == board[2][2] != ' '
     diag1 = board[2][0] == board[1][1] == board[0][2] != ' '
     if diag0 or diag1:
-        return True
-    return False
+        won = True
+    if won:
+        if player == 0:
+            print('Marina wins the game!')
+        else:
+            print('James wins the game!')
+    return won
 
 
 def ok_move(position):
@@ -49,7 +55,7 @@ def ok_move(position):
 def referee():
     player = random.randint(0, 1)
     # Decide who starts randomly (player 0 = marina, player 1 = james)
-    while (not winner()):
+    while (not winner(int(not player))):
         if player == 0:
             position = marina()
             if ok_move(position):
