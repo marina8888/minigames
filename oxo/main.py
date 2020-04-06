@@ -7,6 +7,12 @@ board=[[" "," "," "],
        [" "," "," "],
        [" "," "," "]]
 
+def whostarts
+# we need a random function to decide call either marina or james first - function are marina(), james() both return position
+# functions marina and james need to return a position that is empty, based on a set of rules written in the function
+#function that alternatively calls marina/james then play
+#function whowon function that checks if game has ended or if someone won.
+
 position = (1,1)
 player = "x"
 
@@ -18,6 +24,9 @@ def prettyprint():
 def play(player, position):
     board[position[0]][position[1]]= player
     prettyprint()
+
+def whostarts():
+    
 
 play(player, position)
 
