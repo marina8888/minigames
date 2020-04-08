@@ -36,6 +36,9 @@ def winner(player):
     # Check diganals
     diag0 = board[0][0] == board[1][1] == board[2][2] != ' '
     diag1 = board[2][0] == board[1][1] == board[0][2] != ' '
+    # Check for draw
+    filled = [x != ' ' for x in board[0]] + [x != ' ' for x in board[1]] + [x != ' ' for x in board[2]]
+    draw = all(filled)
     if diag0 or diag1:
         won = True
     if won:
@@ -43,6 +46,9 @@ def winner(player):
             print('Marina wins the game!')
         else:
             print('James wins the game!')
+    if draw:
+        print('Game is a draw!')
+        exit(0)
     return won
 
 
