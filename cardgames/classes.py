@@ -20,7 +20,7 @@ class Player():
 
     def __init__(self, name, inital_bet=0):
         self.name = name
-        self.bet=inital_bet
+        self.money_out = self.bet_per_hand = inital_bet
         self.my_cards = []
 
         # split function allows player to split their card deck.
@@ -43,8 +43,13 @@ class Player():
                 print("card values are under 21, you're still in the game")e
         return total_value
 
+    def check_blackjack(self, player_deck:list[Card]):
+        if player_deck.count==2 and (for card in player_deck if card.name == "Ace" and ("Queen" or "King" or "Jack")):
+        print("You've won blackjack")
+        player_wins_cash = self.bet_per_hand*1.5
+        return player_wins_cash
 
-    def inital_deal(self, dealer_deck, player_deck: list[Card]):
+    def inital_deal(self, dealer_deck: list[Card], player_deck: list[Card]):
         player_deck.append(dealer_deck.pop)
         player_deck.append(dealer_deck.pop)
         print(player_deck[Card.__str__()])
@@ -86,9 +91,15 @@ def split(self, player_deck: list[Card]):
     #after inital deal or after the first two cards of any split pair, if the cards have a hard total of 9, 10 or 11,
     # the player can choose to only have one more card played to them and to double their wager
 def double_down(self, dealer_deck: list[Card], player_deck: list[Card]):
-    self.bet=self.bet*2
+    self.money_out=self.bet_per_hand*2
     player_deck.append(dealer_deck.pop)
     return player_deck
+
+def money_money_money(self,dealer_deck: list[Card], player_deck: list[Card]):
+    if get_value(dealer_deck)>get_value(player_deck)
+        winning_money = Dealer.bet_per_hand * 2
+        loosing_money =
+        print "Dealer wins " +str((Dealer.bet_per_hand*2))
 
 class Dealer(Player):
 
@@ -96,7 +107,7 @@ class Dealer(Player):
         super().__init__(name)
         self.number_of_decks = number_of_decks
         self.deck = self.create_deck(self.number_of_decks)
-        self.deck = self.shuffle(self.deck)
+        self.deck = shuffle(self.deck)
         self.last_card=self.pop_card(self.deck)
 
     def create_deck(self, deck_multiplier):
@@ -110,18 +121,11 @@ class Dealer(Player):
                     card_deck.append(Card(suit, i))
         return card_deck
 
-    @staticmethod
-    def shuffle(cards_to_shuffle):
-        shuffle(cards_to_shuffle)
-        return cards_to_shuffle
 
-    def win_or_loose(self):
-        pass
+def shuffle(cards_to_shuffle):
+    shuffle(cards_to_shuffle)
+    return cards_to_shuffle
 
-    def pay_to_player(self):
-        pass
-
-    def pay_to_self(self):
 
 Marina=Dealer(marina,)
 print()
