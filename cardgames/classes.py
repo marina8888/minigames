@@ -1,40 +1,12 @@
-from random import shuffle
+import random
+
+
 # all cards in this game are split into 1 or more ordered set of cards.
 # in cases such as splitting, game requires to work with only the top ordered set
 # Stack structure is implemented for all cards including dealer's deck of cards and the player's hands.
 # in this case, the number of hands a player has represents the number of elements in a Stack.
 
-class Stack():
-
-    def __init__(self):
-        self.items = []
-
-    def __len__(self):
-        return len(self.items)
-
-    #printing top element
-    def top(self):
-        if len(self) >= 1:
-            print (self.stack[len(self.stack) -1])
-        else:
-            print ("Empty list")
-
-    #popping an element
-    def pop(self):
-        if len(self.items) >= 1:
-            self.items.pop()
-        else:
-            raise IndexError
-
-    # appending an element
-    def push(self,single_hand_or_deck):
-        self.items.append(single_hand_or_deck)
-
-    # join multiple stack elements into a single element
-    def into_single_stack(self):
-        pass
-
-
+# ANYTHING INITIALISED DOESN'T NEED TO BE AN ARGUMENT SQUISHY XXXX
 # create a class representing a single card which initialises and prints the card
 class Card():
 
@@ -50,6 +22,26 @@ class Card():
             return self.value + " of " + self.suit + " "
 
 
+class Stack():
+
+    def __init__(self):
+        self.cards = []
+
+    def __len__(self):
+        return len(self.cards)
+
+    # popping an element
+    def pop(self):
+        if len(self.cards) >= 1:
+            self.cards.pop()
+        else:
+            raise IndexError
+
+    # appending an element
+    def push(self, single_hand_or_deck: [Card]):
+        self.cards.append(single_hand_or_deck)
+
+
 # my cards represent the cards that each player has as a list. The dealer can also access my cards, but deals from deck.
 class Player():
 
@@ -57,7 +49,7 @@ class Player():
         super().__init__()
         self.name = name
         self.money_out = self.bet_per_hand = inital_bet
-        self.my_cards = []
+        self.my_cards = Stack()
         self.number_of_hands = 1
         # split function allows player to split their card deck.
         # number_of_hands value signifies how many sets a player has (up to a maximum of three as players cannot split more than twice per game)
@@ -67,17 +59,18 @@ class Player():
 
     def get_value(self, player_deck: [Card]):
         total_value = 0
+        player_deck = self.my_cards.pop()
         for card in player_deck:
             total_value += card.value
             if total_value > 21:
                 print("card values are over 21, you have lost")
-                # self.freeze()
-                self.over_twentyone = True
+                self.over_twentyone = False
             else:
                 print("card values are under 21, you're still in the game")
+        self.my_cards.push(player_deck)
         return total_value
 
-    def check_blackjack(self, player_deck: Stack):
+    def check_blackjack(self, player_deck: [Card]):
         ace, royal = False, False
         if len(player_deck) == 2:
             for card in player_deck:
@@ -88,21 +81,15 @@ class Player():
         if ace and royal:
             print("You've won blackjack")
             player_wins_cash = self.bet_per_hand * 1.5
-            # self.freeze()
             return player_wins_cash
 
-    def inital_deal(self, dealer_deck: [Card], player_deck: Stack):
-        player_deck.append(dealer_deck.pop)
-        player_deck.append(dealer_deck.pop)
-        print([card.__str__() for card in player_deck])
-        return player_deck
+    # def inital_deal(self, dealer_deck: [Card], player_deck: [Card]):
+    #     player_deck.append(dealer_deck.pop())
+    #     player_deck.append(dealer_deck.pop())
+    #     print([card.__str__() for card in player_deck])
+    #     return player_deck
 
-    def hit(self, dealer_deck: [Card], player_deck: Stack):
-        player_deck.append(dealer_deck.pop)
-        print([card.__str__() for card in player_deck])
-        return player_deck
-
-    def stay(self, player_deck: Stack, ace_value=1):
+    def decide_ace_value(self, player_deck: [Card], ace_value=1):
         if ace_value not in [1, 11]:
             print("Invalid ace value")
         for card in player_deck:
@@ -115,8 +102,7 @@ class Player():
         print("This player will not be able to split in the future")
         return False
 
-
-    def split(self, player_deck: Stack):
+    def split(self, player_deck: [Card]):
         if self.said_split == True:
             if player_deck[-1] == player_deck[-2]:
                 self.number_of_hands += 1
@@ -135,12 +121,12 @@ class Player():
         # after inital deal or after the first two cards of any split pair, if the cards have a hard total of 9, 10 or 11,
         # the player can choose to only have one more card played to them and to double their wager
 
-    def double_down(self, dealer_deck: [Card], player_deck: Stack):
+    def double_down(self, dealer_deck: [Card], player_deck: [Card]):
         self.money_out = self.bet_per_hand * 2
         player_deck.append(dealer_deck.pop)
         return player_deck
 
-    def money_money_money(self, dealer, player_deck: Stack):
+    def money_money_money(self, dealer, player_deck: [Card]):
         if self.get_value(dealer.deck) > self.get_value(player_deck):
             winning_money = dealer.bet_per_hand * 2
             print("Dealer wins " + str((dealer.bet_per_hand * 2)))
@@ -156,7 +142,7 @@ class Dealer(Player):
         self.deck = shuffle(self.deck)
         self.last_card = self.pop_card(self.deck)
 
-# creating a card_deck stack of single_decks (each containing 52 cards)
+    # creating a card_deck stack of single_decks (each containing 52 cards)
     def create_deck(self, deck_multiplier):
         single_deck = []
         for x in range(1, deck_multiplier + 1, 1):
@@ -169,11 +155,14 @@ class Dealer(Player):
             card_deck.push(single_deck)
         return card_deck
 
-# must shuffle all decks together (not just a single deck)
-    def shuffle(self, cards_to_shuffle: [Card]):
-        shuffle(cards_to_shuffle)
-        return cards_to_shuffle
+    # must shuffle all decks together (not just a single deck)
+    def shuffle(self):
+        random.shuffle(self.deck)
 
+    def hit_me_daddy(self, player: Player):
+        card = self.deck.pop()
+        player.my_cards.append(card)
+        print("player was dealt: " + card.__str__())
 
 # # I am a getter for the @properties
 # @property
