@@ -22,7 +22,7 @@ class Card():
             return self.value + " of " + self.suit + " "
 
 
-class Stack():
+class CardStack():
 
     def __init__(self):
         self.cards = []
@@ -49,31 +49,30 @@ class Player():
         super().__init__()
         self.name = name
         self.money_out = self.bet_per_hand = inital_bet
-        self.my_cards = Stack()
-        self.number_of_hands = 1
+        self.my_cards = CardStack()
         # split function allows player to split their card deck.
         # number_of_hands value signifies how many sets a player has (up to a maximum of three as players cannot split more than twice per game)
         # players who have said no to a split earlier in game cannot split later. Value turns false if player did not want to split earlier in game.
         self.said_split = True
         self.over_twentyone = False
 
-    def get_value(self, player_deck: [Card]):
+    def get_value(self):
         total_value = 0
-        player_deck = self.my_cards.pop()
-        for card in player_deck:
+        self.my_cards = self.my_cards.pop()
+        for card in self.my_cards:
             total_value += card.value
             if total_value > 21:
                 print("card values are over 21, you have lost")
                 self.over_twentyone = False
             else:
                 print("card values are under 21, you're still in the game")
-        self.my_cards.push(player_deck)
+        self.my_cards.push(self.my_cards)
         return total_value
 
-    def check_blackjack(self, player_deck: [Card]):
+    def check_blackjack(self):
         ace, royal = False, False
-        if len(player_deck) == 2:
-            for card in player_deck:
+        if len(self.my_cards) == 2:
+            for card in self.my_cards:
                 if card.name == 'Ace':
                     ace = True
                 if card.name in ["Queen", "King", "Jack"]:
@@ -83,16 +82,16 @@ class Player():
             player_wins_cash = self.bet_per_hand * 1.5
             return player_wins_cash
 
-    # def inital_deal(self, dealer_deck: [Card], player_deck: [Card]):
-    #     player_deck.append(dealer_deck.pop())
-    #     player_deck.append(dealer_deck.pop())
-    #     print([card.__str__() for card in player_deck])
-    #     return player_deck
+    # def inital_deal(self, dealer_deck: [Card], self.my_cards: [Card]):
+    #     self.my_cards.append(dealer_deck.pop())
+    #     self.my_cards.append(dealer_deck.pop())
+    #     print([card.__str__() for card in self.my_cards])
+    #     return self.my_cards
 
-    def decide_ace_value(self, player_deck: [Card], ace_value=1):
+    def decide_ace_value(self, ace_value=1):
         if ace_value not in [1, 11]:
             print("Invalid ace value")
-        for card in player_deck:
+        for card in self.self.my_cards:
             if card.name == "Ace":
                 card.value = ace_value
             else:
@@ -102,32 +101,30 @@ class Player():
         print("This player will not be able to split in the future")
         return False
 
-    def split(self, player_deck: [Card]):
-        if self.said_split == True:
-            if player_deck[-1] == player_deck[-2]:
-                self.number_of_hands += 1
-                split_my_cards, split2_my_cards = [], []
-                if self.number_of_hands == 2:
-                    split_my_cards = split_my_cards.append(player_deck.pop())
-                    return split_my_cards
-                if self.number_of_hands == 3:
-                    split2_my_cards = split2_my_cards.append(split_my_cards.pop())
-                    return split2_my_cards
+    def split(self):
+        old_hand = []
+        new_hand=[]
+        if self.said_split == True and len(self.my_cards)<4:
+            old_hand=self.my_cards.pop()
+            if old_hand[-1]==old_hand[-2]:
+                new_hand=old_hand[-1].pop()
+                self.my_cards.push(old_hand)
+                self.my_cards.push(new_hand)
             else:
                 print("no identical last cards for splitting")
         else:
-            print("cannot split cards because said no to splitting earlier in game")
+            print('cannot split cards because said no to splitting earlier in game')
 
         # after inital deal or after the first two cards of any split pair, if the cards have a hard total of 9, 10 or 11,
         # the player can choose to only have one more card played to them and to double their wager
 
-    def double_down(self, dealer_deck: [Card], player_deck: [Card]):
+    def double_down(self, dealer_deck: [Card]):
         self.money_out = self.bet_per_hand * 2
-        player_deck.append(dealer_deck.pop)
-        return player_deck
+        self.my_cards.append(dealer_deck.pop)
+        return self.my_cards
 
-    def money_money_money(self, dealer, player_deck: [Card]):
-        if self.get_value(dealer.deck) > self.get_value(player_deck):
+    def money_money_money(self, dealer):
+        if self.get_value(dealer.deck) > self.get_value(self.my_cards):
             winning_money = dealer.bet_per_hand * 2
             print("Dealer wins " + str((dealer.bet_per_hand * 2)))
             return winning_money
@@ -162,7 +159,7 @@ class Dealer(Player):
     def hit_me_daddy(self, player: Player):
         card = self.deck.pop()
         player.my_cards.append(card)
-        print("player was dealt: " + card.__str__())
+        print("player was dealt: " + str(card))
 
 # # I am a getter for the @properties
 # @property
