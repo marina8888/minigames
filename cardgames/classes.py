@@ -19,13 +19,13 @@ class Card():
         if self.name:
             return self.name + " of " + self.suit + " "
         else:
-            return self.value + " of " + self.suit + " "
+            return str(self.value) + " of " + self.suit + " "
 
 
 class CardStack():
 
     def __init__(self):
-        self.cards = []
+        self.cards = [[]]
 
     def __len__(self):
         return len(self.cards)
@@ -33,7 +33,7 @@ class CardStack():
     # popping an element
     def pop(self):
         if len(self.cards) >= 1:
-            self.cards.pop()
+            return self.cards.pop()
         else:
             raise IndexError
 
@@ -45,10 +45,9 @@ class CardStack():
 # my cards represent the cards that each player has as a list. The dealer can also access my cards, but deals from deck.
 class Player():
 
-    def __init__(self, name, inital_bet=0):
-        super().__init__()
+    def __init__(self, name, initial_bet=0):
         self.name = name
-        self.money_out = self.bet_per_hand = inital_bet
+        self.money_out = self.bet_per_hand = initial_bet
         self.my_cards = CardStack()
         # split function allows player to split their card deck.
         # number_of_hands value signifies how many sets a player has (up to a maximum of three as players cannot split more than twice per game)
@@ -58,15 +57,15 @@ class Player():
 
     def get_value(self):
         total_value = 0
-        self.my_cards = self.my_cards.pop()
-        for card in self.my_cards:
+        cards = self.my_cards.pop()
+        for card in cards:
             total_value += card.value
-            if total_value > 21:
-                print("card values are over 21, you have lost")
-                self.over_twentyone = False
-            else:
-                print("card values are under 21, you're still in the game")
-        self.my_cards.push(self.my_cards)
+        if total_value > 21:
+            print("card values are over 21, you have lost")
+            self.over_twentyone = False
+        else:
+            print("card values are under 21, you're still in the game")
+        self.my_cards.push(cards)
         return total_value
 
     def check_blackjack(self):
@@ -81,12 +80,6 @@ class Player():
             print("You've won blackjack")
             player_wins_cash = self.bet_per_hand * 1.5
             return player_wins_cash
-
-    # def inital_deal(self, dealer_deck: [Card], self.my_cards: [Card]):
-    #     self.my_cards.append(dealer_deck.pop())
-    #     self.my_cards.append(dealer_deck.pop())
-    #     print([card.__str__() for card in self.my_cards])
-    #     return self.my_cards
 
     def decide_ace_value(self, ace_value=1):
         if ace_value not in [1, 11]:
@@ -132,16 +125,15 @@ class Player():
 
 class Dealer(Player):
 
-    def __init__(self, name, number_of_decks=1):
-        super().__init__(name)
+    def __init__(self, name, intial_bet=0, number_of_decks=1):
+        super().__init__(name,initial_bet=intial_bet)
         self.number_of_decks = number_of_decks
         self.deck = self.create_deck(self.number_of_decks)
-        self.deck = shuffle(self.deck)
-        self.last_card = self.pop_card(self.deck)
+        self.shuffle()
 
     # creating a card_deck stack of single_decks (each containing 52 cards)
     def create_deck(self, deck_multiplier):
-        single_deck = []
+        single_deck=[]
         for x in range(1, deck_multiplier + 1, 1):
             for suit in ["Hearts", "Diamonds", "Spades", "Clubs"]:
                 single_deck.append(Card(suit, 1, name="Ace"))
@@ -149,8 +141,7 @@ class Dealer(Player):
                     single_deck.append(Card(suit, 10, name=royal))
                 for i in range(1, 11, 1):
                     single_deck.append(Card(suit, i))
-            card_deck.push(single_deck)
-        return card_deck
+        return single_deck
 
     # must shuffle all decks together (not just a single deck)
     def shuffle(self):
@@ -158,9 +149,22 @@ class Dealer(Player):
 
     def hit_me_daddy(self, player: Player):
         card = self.deck.pop()
-        player.my_cards.append(card)
+        player_cards=player.my_cards.pop()
+        player_cards.append(card)
+        player.my_cards.push(player_cards)
         print("player was dealt: " + str(card))
+        player.get_value()
 
+    def inital_deal(self, player: Player):
+        card = self.deck.pop()
+        player_cards=player.my_cards.pop()
+        player_cards.append(card)
+        print("player was dealt: " + str(card))
+        card = self.deck.pop()
+        player_cards.append(card)
+        print("player was dealt: " + str(card))
+        player.my_cards.push(player_cards)
+        player.check_blackjack()
 # # I am a getter for the @properties
 # @property
 # def name(self):
