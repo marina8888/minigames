@@ -1,0 +1,33 @@
+{
+  "name": "White Bread",
+  "ingredients": {
+    "strong white flour": {
+      "quantity": 2,
+      "unit": "cups"
+    },
+    "olive oil": {
+      "quantity": 2,
+      "unit": "tablespoons"
+    },
+    "milk": {
+      "quantity": 2,
+      "unit": "tablespoons"
+    },
+    "sugar": {
+      "quantity": 1.5,
+      "unit": "tablespoons"
+    },
+    "salt": {
+      "quantity": 1,
+      "unit": "teaspoon"
+    },
+    "warm water": {
+      "quantity": 0.666,
+      "unit": "cups"
+    },
+    "yeast": {
+      "quantity": 1,
+      "unit": "teaspoon"
+    }
+  }
+}
