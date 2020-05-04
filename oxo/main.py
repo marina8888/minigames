@@ -1,6 +1,6 @@
 import random
 import time
-from players import James1, Marina
+from players import James1, Marina, newplayer
 
 # Board object
 board = [[" ", " ", " "],
