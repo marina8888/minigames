@@ -1,10 +1,12 @@
 import random
 import time
+from players import James1, Marina
 
 # Board object
 board = [[" ", " ", " "],
          [" ", " ", " "],
          [" ", " ", " "]]
+
 
 
 # Helper functions
@@ -63,7 +65,7 @@ def referee():
     # Decide who starts randomly (player 0 = marina, player 1 = james)
     while (not winner(int(not player))):
         if player == 0:
-            position = marina()
+            position = Marina.play(board)
             if ok_move(position):
                 print('Marina plays:')
                 play('x', position)
@@ -71,7 +73,7 @@ def referee():
                 print("Invalid move by Marina - James wins!")
                 exit(0)
         else:
-            position = james()
+            position = James1.play(board)
             if ok_move(position):
                 print('James plays:')
                 play('o', position)
@@ -80,143 +82,6 @@ def referee():
                 exit(0)
         player = int(not player)
         time.sleep(3)
-
-
-# AI Players
-def marina():
-    if board[1][1] ==' ':
-        return (1, 1)
-
-    # Check diganals 1
-    elif board[0][0] == board[2][2] and board[1][1] == ' ':
-        return (1,1)
-    elif board[2][0] == board[0][2] and board[1][1] == ' ':
-        return (1,1)
-    # Check diganals 2
-    elif board[0][0] == board[1][1] and board[2][2] == ' ':
-        return (2,2)
-    elif board[1][1] == board[2][2] and board[0][0] == ' ':
-        return (0,0)
-    # Check diganals 3
-    elif board[0][2] == board[1][1] and board[2][0] == ' ':
-        return (2,0)
-    elif board[2][0] == board[1][1] and board[0][2] == ' ':
-        return (0,2)
-
-    # Check columns set 1
-    elif board[0][0] == board[1][0] and board[2][0] == ' ':
-        return (2,0)
-    elif board[1][0] == board[2][0] and board[0][0] == ' ':
-        return (0,0)
-    elif board[2][0] == board[0][0] and board[1][0] == ' ':
-        return (1,0)
-
-    # Check columns set 2
-    elif board[0][1] == board[1][1] and board[2][1] == ' ':
-        return (2,1)
-    elif board[1][1] == board[2][1] and board[0][1] == ' ':
-        return (0,1)
-    elif board[2][1] == board[0][1] and board[1][1] == ' ':
-        return (1,1)
-
-    # Check columns set 3
-    elif board[0][2] == board[1][2] and board[2][2] == ' ':
-        return (2,2)
-    elif board[1][2] == board[2][2] and board[0][2] == ' ':
-        return (0,2)
-    elif board[2][2] == board[0][2] and board[1][2] == ' ':
-        return (1,2)
-
-    # Check rows set 1
-    elif board[0][0] == board[0][1] and board[0][2] == ' ':
-        return (0,2)
-    elif board[0][1] == board[0][2] and board[0][0] == ' ':
-        return (0,0)
-    elif board[0][2] == board[0][0] and board[0][1] == ' ':
-        return (0,1)
-
-# Check rows set 2
-    elif board[1][0] == board[1][1] and board[1][2] == ' ':
-        return (1,2)
-    elif board[1][1] == board[1][2] and board[1][0] == ' ':
-        return (1, 0)
-    elif board[1][2] == board[1][0] and board[1][1] == ' ':
-        return (1, 1)
-
-    # Check rows set 3
-    elif board[2][0] == board[2][1] and board[2][2] == ' ':
-        return (2,2)
-    elif board[2][1] == board[2][2] and board[2][0] == ' ':
-        return (2, 0)
-    elif board[2][2] == board[2][0] and board[2][1] == ' ':
-        return (2, 1)
-
-    #fill in diagonals
-    elif board[0][0] == ' ':
-        return (0,0)
-    elif board[2][0] == ' ':
-        return (2, 0)
-    elif board[0][2] == ' ':
-        return (0, 2)
-    elif board[2][2] == ' ':
-        return (2, 2)
-
-    # fill in columns
-    elif board[1][0] == ' ':
-        return (1, 0)
-    elif board[0][1] == ' ':
-        return (0, 1)
-    elif board[2][1] == ' ':
-        return (2, 1)
-    elif board[1][2] == ' ':
-        return (1, 2)
-    else:
-        return (0,0)
-
-def james():
-    # Create list of options, rows, cols then diags
-    options = []
-    # rows
-    options.append(len((board[0][0] + board[0][1] + board[0][2]).strip()))
-    options.append(len((board[1][0] + board[1][1] + board[1][2]).strip()))
-    options.append(len((board[2][0] + board[2][1] + board[2][2]).strip()))
-    # cols
-    options.append(len((board[0][0] + board[1][0] + board[2][0]).strip()))
-    options.append(len((board[0][1] + board[1][1] + board[2][1]).strip()))
-    options.append(len((board[0][2] + board[1][2] + board[2][2]).strip()))
-    # diags
-    options.append(len((board[0][0] + board[1][1] + board[2][2]).strip()))
-    options.append(len((board[2][0] + board[1][1] + board[0][2]).strip()))
-    # Check lengths
-    if max(options) == 0:
-        return (1,1) # Start in the middle...
-    selector = options.index(max(options))
-    # Rows
-    if selector in [0, 1, 2]:
-        iterator = 0
-        for candidate in board[selector]:
-            if candidate == ' ':
-                return (selector, iterator)
-            iterator += 1
-    # Cols
-    if selector in [3, 4, 5]:
-        selector -= 3
-        iterator = 0
-        for candidate in [x[0] for x in board[selector]]:
-            if candidate == ' ':
-                return (iterator, selector)
-            iterator += 1
-    # Diags
-    if selector in [6, 7]:
-        if selector == 6:
-            for iterator in range(3):
-                if board[iterator][iterator] == ' ':
-                    return (iterator, iterator)
-        elif selector == 7:
-            for iterator in range(3):
-                if board[2-iterator][iterator] == ' ':
-                    return (2-iterator, iterator)
-
 
 
 if __name__ == "__main__":

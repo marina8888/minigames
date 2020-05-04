@@ -165,15 +165,3 @@ class Dealer(Player):
         print("player was dealt: " + str(card))
         player.my_cards.push(player_cards)
         player.check_blackjack()
-# # I am a getter for the @properties
-# @property
-# def name(self):
-#     return self._name
-#
-# @name.setter
-# def name(self, newname):
-#     self._name = newname
-#
-# @name.deleter
-# def name(self):
-#     del self._name
