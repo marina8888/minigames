@@ -1,0 +1,41 @@
+{
+  "name": "Spaghetti Bolognese",
+  "ingredients": {
+    "beef mince": {
+      "quantity": 500,
+      "unit": "grams"
+    },
+    "chopped tomatoes": {
+      "quantity": 1,
+      "unit": "can"
+    },
+    "grated carrot": {
+      "quantity": 1,
+      "unit": "handful"
+    },
+    "chopped mushrooms": {
+      "quantity": 5,
+      "unit": "whole"
+    },
+    "beef stock": {
+      "quantity": 1,
+      "unit": "litre"
+    },
+    "salt": {
+      "quantity": 1,
+      "unit": "pinch"
+    },
+    "tomato concentrate": {
+      "quantity": 0.25,
+      "unit": "tube"
+    },
+    "spaghetti": {
+      "quantity": 100,
+      "unit": "grams/person"
+    },
+    "chopped onion": {
+      "quantity": 1,
+      "unit": "whole"
+    }
+  }
+}

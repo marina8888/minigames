@@ -1,0 +1,25 @@
+{
+  "name": "Marina Salad",
+  "ingredients": {
+    "avocado": {
+      "quantity": 1,
+      "unit": "whole"
+    },
+    "tomato": {
+      "quantity": 4,
+      "unit": "whole"
+    },
+    "melon": {
+      "quantity": 0.5,
+      "unit": "whole"
+    },
+    "comfy comfy vinegar": {
+      "quantity": 0.25,
+      "unit": "bottle"
+    },
+    "chopped onion": {
+      "quantity": 0.5,
+      "unit": "whole"
+    }
+  }
+}

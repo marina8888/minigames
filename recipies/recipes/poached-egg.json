@@ -1,0 +1,25 @@
+{
+  "name": "Poached egg, avocado and asparagus on toast",
+  "ingredients": {
+    "egg": {
+      "quantity": 1,
+      "unit": "whole"
+    },
+    "asparagus": {
+      "quantity": 5,
+      "unit": "spears"
+    },
+    "avocado": {
+      "quantity": 1,
+      "unit": "whole"
+    },
+    "bread": {
+      "quantity": 1,
+      "unit": "piece"
+    },
+    "comfy comfy vinegar": {
+      "quantity": 2,
+      "unit": "tablespoons"
+    }
+  }
+}
