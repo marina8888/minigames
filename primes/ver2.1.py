@@ -11,16 +11,16 @@ primes_list= np.array([2])
 appendable: bool = True
 prime_end={1,3,7,9}
 
-@njit
-def marina(list, )
-    for i in range (2,int(max_val)+1,1):
-    if i % 10 in prime_end:
-        for primes in primes_list[primes_list<math.sqrt(i)]:
-            if i%primes==0:
-                appendable=False
-        if appendable==True:
-            primes_list=np.append(primes_list, i)
-    appendable=True
-t2=time.monotonic()
-print(primes_list)
-print(t2-t1)
+# @njit
+# def marina(list, )
+#     for i in range (2,int(max_val)+1,1):
+#     if i % 10 in prime_end:
+#         for primes in primes_list[primes_list<math.sqrt(i)]:
+#             if i%primes==0:
+#                 appendable=False
+#         if appendable==True:
+#             primes_list=np.append(primes_list, i)
+#     appendable=True
+# t2=time.monotonic()
+# print(primes_list)
+# print(t2-t1)
